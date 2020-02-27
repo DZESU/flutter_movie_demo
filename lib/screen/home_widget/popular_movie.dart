@@ -1,13 +1,23 @@
 
 import 'package:flutter/material.dart';
+import 'package:movie_demo/model/movies/Result.dart';
 import 'package:movie_demo/screen/movie_detail/movie_detail.dart';
 
 import '../../constant.dart';
 
-class RecentedMovie extends StatelessWidget {
+class PopularMovie extends StatelessWidget {
+
+
+  PopularMovie({@required this.movie});
+  final Result movie;
+
 
   @override
   Widget build(BuildContext context) {
+    String genres = "";
+    for(int i = 0; i < movie.genre_ids.length; i++){
+      genres += kGenres[movie.genre_ids[i]]+ ", ";
+    }
     return GestureDetector(
       onTap: (){
         Navigator.pushNamed(context, MovieDetialRoute);
@@ -19,7 +29,7 @@ class RecentedMovie extends StatelessWidget {
             Container(
               width: 360,
               child: Image.network(
-                kMovie1,
+                kBaseImageUrl+movie.backdrop_path,
                 fit: BoxFit.cover,
               ),
             ),
@@ -47,14 +57,14 @@ class RecentedMovie extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Text(
-                    "6 Underground",
+                    movie.title,
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 17.0),
                   ),
                   Text(
-                    "Action, Comedy, Crime",
+                    genres,
                     style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.w400,

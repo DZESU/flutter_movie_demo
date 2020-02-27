@@ -1,16 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:movie_demo/constant.dart';
-import 'package:movie_demo/model/Result.dart';
+import 'package:movie_demo/model/movies/Result.dart';
 
-import 'recent_movie.dart';
+import 'popular_movie.dart';
 
-class RecentlyAddedView extends StatelessWidget {
+class PopularMovieView extends StatelessWidget {
+  PopularMovieView({@required this.movies});
 
+  List<Result> movies;
 
   @override
   Widget build(BuildContext context) {
-
     return Container(
       child: Column(
         children: <Widget>[
@@ -20,7 +21,7 @@ class RecentlyAddedView extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   child: Text(
-                    "Recently Added",
+                    "Popular Movie",
                     style: headerStyle,
                   ),
                 ),
@@ -39,17 +40,28 @@ class RecentlyAddedView extends StatelessWidget {
             margin: EdgeInsets.only(top: 20.0),
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
-              itemCount: 6,
+              itemCount: movies.length,
               separatorBuilder: (BuildContext context, int index) => Divider(),
               itemBuilder: (BuildContext context, int index) {
                 if (index == 0) {
                   return Padding(
                       padding: const EdgeInsets.only(left: 20.0),
-                      child: RecentedMovie());
-                } else {
+                      child: PopularMovie(
+                        movie: movies.elementAt(index),
+                      ));
+                } else if (index == movies.length - 1){
+                  return Padding(
+                      padding: const EdgeInsets.only(left: 10,right: 10.0),
+                      child: PopularMovie(
+                        movie: movies.elementAt(index),
+                      ));
+                }
+                else {
                   return Padding(
                       padding: const EdgeInsets.only(left: 10.0),
-                      child: RecentedMovie());
+                      child: PopularMovie(
+                        movie: movies.elementAt(index),
+                      ));
                 }
               },
             ),

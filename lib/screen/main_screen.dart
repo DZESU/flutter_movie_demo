@@ -1,12 +1,9 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movie_demo/constant.dart';
-import 'package:movie_demo/model/Movies.dart';
 import 'package:movie_demo/screen/browse_widget/browse_widget.dart';
 import 'package:movie_demo/screen/search_widget/search_widget.dart';
-import 'package:movie_demo/services/network_helper.dart';
 import 'package:movie_demo/view/search_bar.dart';
 
 import 'home_widget/home_widget.dart';
@@ -88,10 +85,7 @@ class _MainScreenState extends State<MainScreen> {
               Expanded(
                 child: Stack(
                   children: <Widget>[
-                    Visibility(
-                      child: navView.elementAt(_selectedIndex),
-                      visible: !_showSearch,
-                    ),
+                    navView.elementAt(_selectedIndex),
                     Visibility(
                       child: SearchWidget(),
                       visible: _showSearch,

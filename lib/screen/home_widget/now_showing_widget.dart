@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:movie_demo/model/movies/Result.dart';
 
 import '../../constant.dart';
 
-class ContinueWatching extends StatelessWidget {
+class NowShowingView extends StatelessWidget {
+  NowShowingView({this.headerTitle, this.movies});
+
+  final List<Result> movies;
+  final String headerTitle;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -15,7 +21,7 @@ class ContinueWatching extends StatelessWidget {
               children: <Widget>[
                 Expanded(
                   child: Text(
-                    "Continue Watching...",
+                    headerTitle,
                     style: headerStyle,
                   ),
                 ),
@@ -31,7 +37,7 @@ class ContinueWatching extends StatelessWidget {
           ),
           Container(
             margin: EdgeInsets.only(top: 20),
-            height: 230,
+            height: 240,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemCount: 10,
@@ -39,12 +45,18 @@ class ContinueWatching extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 if (index == 0) {
                   return Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: ContinueWatchMovie());
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: NowShowingMovie(
+                      movie: movies[index],
+                    ),
+                  );
                 } else {
                   return Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
-                      child: ContinueWatchMovie());
+                    padding: const EdgeInsets.only(left: 20.0),
+                    child: NowShowingMovie(
+                      movie: movies[index],
+                    ),
+                  );
                 }
               },
             ),
@@ -55,10 +67,17 @@ class ContinueWatching extends StatelessWidget {
   }
 }
 
-class ContinueWatchMovie extends StatelessWidget {
+class NowShowingMovie extends StatelessWidget {
+  NowShowingMovie({@required this.movie});
+
+  final Result movie;
 
   @override
   Widget build(BuildContext context) {
+    String genres = "";
+    for (int i = 0; i < movie.genre_ids.length; i++) {
+      genres += kGenres[movie.genre_ids[i]] + ", ";
+    }
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -68,12 +87,13 @@ class ContinueWatchMovie extends StatelessWidget {
           child: ClipRRect(
             borderRadius: BorderRadius.circular(10.0),
             child: Image.network(
-              kMovie2,
+              kBaseImageUrl + movie.poster_path,
               fit: BoxFit.cover,
             ),
           ),
         ),
         Container(
+          margin: EdgeInsets.only(top: 10),
           width: 130,
           child: Text(
             "Ant Man and the wasp",
@@ -87,7 +107,7 @@ class ContinueWatchMovie extends StatelessWidget {
         Container(
           width: 130,
           child: Text(
-            "Action Adventure",
+            genres,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
                 color: Colors.black26,
@@ -95,7 +115,6 @@ class ContinueWatchMovie extends StatelessWidget {
                 fontSize: 10.0),
           ),
         ),
-
       ],
     );
   }
