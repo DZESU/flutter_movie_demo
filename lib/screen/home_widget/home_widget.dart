@@ -19,11 +19,8 @@ class _HomeWidgetState extends State<HomeWidget> {
   Future<Movies> nowShowingMovie;
   Future<Movies> trendingMovie;
 
-
-
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     NetworkHelper networkHelper = NetworkHelper();
     popularMovies = networkHelper.fetchMovies(kUrlPopularMovie);
@@ -33,40 +30,61 @@ class _HomeWidgetState extends State<HomeWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Stack(
       children: <Widget>[
-        FutureBuilder<Movies>(
-          future: popularMovies,
-          builder: (context, snapshot) {
-            if(snapshot.hasData) {
-              return PopularMovieView(movies: snapshot.data.results);
-            }else{
-              return Center(child: CircularProgressIndicator());
-            }
-          },
+        ListView(
+          children: <Widget>[
+            FutureBuilder<Movies>(
+              future: popularMovies,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return PopularMovieView(movies: snapshot.data.results);
+                } else {
+                  return Container();
+                }
+              },
+            ),
+            FutureBuilder<Movies>(
+              future: nowShowingMovie,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return NowShowingView(
+                      headerTitle: "Now Showing",
+                      movies: snapshot.data.results);
+                } else {
+                  return Container();
+                }
+              },
+            ),
+            FutureBuilder<Movies>(
+              future: trendingMovie,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return NowShowingView(
+                      headerTitle: "Trend of the Week",
+                      movies: snapshot.data.results);
+                } else {
+                  return Container();
+                }
+              },
+            ),
+            Container(
+              margin: EdgeInsets.only(bottom: 10),
+            )
+          ],
         ),
-        FutureBuilder<Movies>(
-          future: nowShowingMovie,
-          builder: (context, snapshot) {
-            if(snapshot.hasData) {
-              return NowShowingView(headerTitle: "Now Showing",movies: snapshot.data.results);
-            }else{
-              return Center(child: CircularProgressIndicator());
-            }
-          },
-        ),
-
-        FutureBuilder<Movies>(
+        FutureBuilder(
           future: trendingMovie,
-          builder: (context, snapshot) {
-            if(snapshot.hasData) {
-              return NowShowingView(headerTitle: "Trend of the Week",movies: snapshot.data.results);
+          builder: (context, snapshot){
+            if(!snapshot.hasData){
+              return Center(
+                child: CircularProgressIndicator(),
+              );
             }else{
-              return Center(child: CircularProgressIndicator());
+              return Container();
             }
           },
         ),
-        Container(margin: EdgeInsets.only(bottom: 10),)
       ],
     );
   }

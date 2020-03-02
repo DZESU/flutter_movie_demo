@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:movie_demo/model/movies/Result.dart';
-import 'package:movie_demo/screen/movie_detail/movie_detail.dart';
+import 'package:movie_demo/screen/movie_detail/movie_detail_view.dart';
 
 import '../../constant.dart';
 
@@ -18,9 +18,11 @@ class PopularMovie extends StatelessWidget {
     for(int i = 0; i < movie.genre_ids.length; i++){
       genres += kGenres[movie.genre_ids[i]]+ ", ";
     }
+    genres = genres.substring(0, genres.length - 2);
+
     return GestureDetector(
       onTap: (){
-        Navigator.pushNamed(context, MovieDetialRoute);
+        Navigator.pushNamed(context, MovieDetialRoute,arguments: movie.id);
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),

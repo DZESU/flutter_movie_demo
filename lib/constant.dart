@@ -23,6 +23,14 @@ const String kUrlTrendingMovie =
     "https://api.themoviedb.org/3/trending/movie/week?api_key=5d967c7c335764f39b1efbe9c5de9760";
 const String kUrlTopActor =
     "https://api.themoviedb.org/3/person/popular?api_key=5d967c7c335764f39b1efbe9c5de9760&language=en-US&page=1";
+const String kUrlMovieDetail =
+    "https://api.themoviedb.org/3/movie/___Movie_id___?api_key=5d967c7c335764f39b1efbe9c5de9760&language=en-US";
+const String kUrlMovieCredit =
+    "https://api.themoviedb.org/3/movie/___Movie_id___/credits?api_key=5d967c7c335764f39b1efbe9c5de9760";
+const String kUrlMovieVideo =
+    "https://api.themoviedb.org/3/movie/___Movie_id___/videos?api_key=5d967c7c335764f39b1efbe9c5de9760&language=en-US";
+const String kUrlSearchMovie =
+    "https://api.themoviedb.org/3/search/movie?api_key=5d967c7c335764f39b1efbe9c5de9760&language=en-US&query=___query___&page=1&include_adult=false";
 const String kBaseImageUrl = "https://image.tmdb.org/t/p/w500/";
 
 const Map<int, String> kGenres = {

@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:movie_demo/model/movies/Movies.dart';
+import 'package:movie_demo/model/movies/Result.dart';
 
 import '../../constant.dart';
 
 class GenresWidget extends StatelessWidget {
+
+
+  GenresWidget({this.movies});
+  List<Result> movies;
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -45,11 +53,11 @@ class GenresWidget extends StatelessWidget {
                 if (index == 0) {
                   return Padding(
                       padding: const EdgeInsets.only(left: 20.0),
-                      child: ContinueWatchMovie());
+                      child: GenresMovie(movie: movies[index],));
                 } else {
                   return Padding(
                       padding: const EdgeInsets.only(left: 20.0),
-                      child: ContinueWatchMovie());
+                      child: GenresMovie(movie: movies[index],));
                 }
               },
             ),
@@ -60,7 +68,13 @@ class GenresWidget extends StatelessWidget {
   }
 }
 
-class ContinueWatchMovie extends StatelessWidget {
+class GenresMovie extends StatelessWidget {
+
+  GenresMovie({this.movie});
+
+  final Result movie;
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -73,7 +87,7 @@ class ContinueWatchMovie extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
               child: Image.network(
-                kMovie2,
+                kBaseImageUrl+movie.poster_path,
                 fit: BoxFit.cover,
               ),
             ),
@@ -87,7 +101,7 @@ class ContinueWatchMovie extends StatelessWidget {
             ),
           ),
           Text(
-            "gete",
+            kGenres[movie.genre_ids[0]],
             style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18.0,

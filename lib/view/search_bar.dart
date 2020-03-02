@@ -22,9 +22,16 @@ class _SearchBarState extends State<SearchBar>{
   void initState() {
     _focusNode = FocusNode();
     _controller = TextEditingController();
+    _controller.addListener(() {
+      if(_controller.text.isEmpty){
+        widget.onClose(false, _controller.text);
+      }else{
+        widget.onClose(true, _controller.text);
+      }
+    });
     _focusNode.addListener(() {
       print("view focus is "+ _focusNode.hasPrimaryFocus.toString());
-      widget.onClose(_focusNode.hasPrimaryFocus);
+//      widget.onClose(_focusNode.hasPrimaryFocus);
     });
     super.initState();
   }
@@ -69,11 +76,9 @@ class _SearchBarState extends State<SearchBar>{
                   color: Colors.grey,
                 ),
                 onPressed: () {
-                  print("this shit is suck " +
-                      _focusNode.hasPrimaryFocus.toString());
                   _controller.clear();
                   _focusNode.unfocus();
-                  widget.onClose(_focusNode.hasPrimaryFocus);
+                  widget.onClose(_focusNode.hasPrimaryFocus,"");
                 },
               ),
             ),

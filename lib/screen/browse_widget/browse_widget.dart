@@ -28,39 +28,65 @@ class _BrowseWidgetState extends State<BrowseWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return ListView(
+    return Stack(
       children: <Widget>[
-        FutureBuilder<Movies>(
+        ListView(
+          children: <Widget>[
+            FutureBuilder<Movies>(
+              future: popularMovies,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return NowShowingView(
+                    headerTitle: "Popular Movie",
+                    movies: snapshot.data.results,
+                  );
+                } else {
+                  return Center();
+                }
+              },
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 20.0),
+              child: FutureBuilder<People>(
+                future: topActors,
+                builder: (context, snapshot) {
+                  print("snapshot data: " + snapshot.data.toString());
+                  if (snapshot.hasData) {
+                    return ActorWidget(
+                      people: snapshot.data.results,
+                    );
+                  } else {
+                    return Center();
+                  }
+                },
+              ),
+            ),
+            FutureBuilder<Movies>(
+              future: popularMovies,
+              builder: (context, snapshot) {
+                if (snapshot.hasData) {
+                  return GenresWidget(
+                    movies: snapshot.data.results,
+                  );
+                } else {
+                  return Center();
+                }
+              },
+            ),
+          ],
+        ),
+        FutureBuilder(
           future: popularMovies,
-          builder: (context, snapshot) {
-            if (snapshot.hasData) {
-              return NowShowingView(
-                headerTitle: "Popular Movie",
-                movies: snapshot.data.results,
-              );
-            } else {
+          builder: (context, snapshot){
+            if(!snapshot.hasData){
               return Center(
                 child: CircularProgressIndicator(),
               );
+            }else{
+              return Container();
             }
           },
         ),
-        Container(
-          margin: EdgeInsets.only(top: 20.0),
-          child: FutureBuilder<People>(
-            future: topActors,
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return ActorWidget(people: snapshot.data.results);
-              } else {
-                return Center(
-                  child: CircularProgressIndicator(),
-                );
-              }
-            },
-          ),
-        ),
-        GenresWidget(),
       ],
     );
   }
@@ -111,7 +137,7 @@ class ActorWidget extends StatelessWidget {
                     child: CircleAvatar(
                       backgroundImage: NetworkImage(
                           kBaseImageUrl + people[index].profile_path),
-                      backgroundColor: Colors.grey,
+                      backgroundColor: Colors.white,
                     ),
                   ),
                 );
@@ -123,7 +149,7 @@ class ActorWidget extends StatelessWidget {
                     child: CircleAvatar(
                       backgroundImage: NetworkImage(
                           kBaseImageUrl + people[index].profile_path),
-                      backgroundColor: Colors.grey,
+                      backgroundColor: Colors.white,
                     ),
                   ),
                 );

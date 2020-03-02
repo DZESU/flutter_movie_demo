@@ -78,44 +78,50 @@ class NowShowingMovie extends StatelessWidget {
     for (int i = 0; i < movie.genre_ids.length; i++) {
       genres += kGenres[movie.genre_ids[i]] + ", ";
     }
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Container(
-          width: 130,
-          height: 200,
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(10.0),
-            child: Image.network(
-              kBaseImageUrl + movie.poster_path,
-              fit: BoxFit.cover,
+    genres = genres.substring(0,genres.length-2);
+    return GestureDetector(
+      onTap: (){
+        Navigator.pushNamed(context, MovieDetialRoute,arguments: movie.id);
+      },
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: <Widget>[
+          Container(
+            width: 130,
+            height: 200,
+            child: ClipRRect(
+              borderRadius: BorderRadius.circular(10.0),
+              child: Image.network(
+                kBaseImageUrl + movie.poster_path,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
-        ),
-        Container(
-          margin: EdgeInsets.only(top: 10),
-          width: 130,
-          child: Text(
-            "Ant Man and the wasp",
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-                color: Colors.black54,
-                fontWeight: FontWeight.bold,
-                fontSize: 15.0),
+          Container(
+            margin: EdgeInsets.only(top: 10),
+            width: 130,
+            child: Text(
+              movie.title,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  color: Colors.black54,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 15.0),
+            ),
           ),
-        ),
-        Container(
-          width: 130,
-          child: Text(
-            genres,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyle(
-                color: Colors.black26,
-                fontWeight: FontWeight.w400,
-                fontSize: 10.0),
+          Container(
+            width: 130,
+            child: Text(
+              genres,
+              overflow: TextOverflow.ellipsis,
+              style: TextStyle(
+                  color: Colors.black26,
+                  fontWeight: FontWeight.w400,
+                  fontSize: 10.0),
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 }

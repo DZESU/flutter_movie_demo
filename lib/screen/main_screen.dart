@@ -1,9 +1,12 @@
+import 'dart:async';
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:movie_demo/constant.dart';
+import 'package:movie_demo/model/movies/Movies.dart';
 import 'package:movie_demo/screen/browse_widget/browse_widget.dart';
 import 'package:movie_demo/screen/search_widget/search_widget.dart';
+import 'package:movie_demo/services/network_helper.dart';
 import 'package:movie_demo/view/search_bar.dart';
 
 import 'home_widget/home_widget.dart';
@@ -16,6 +19,9 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   int _selectedIndex = 0;
   bool _showSearch = false;
+  String _text = "";
+  StreamController _streamController;
+  NetworkHelper networkHelper = NetworkHelper();
 
   List<Widget> navView = <Widget>[
     HomeWidget(),
@@ -26,12 +32,10 @@ class _MainScreenState extends State<MainScreen> {
 
   List<String> titleBar = ["Muvies", "Browse", "Saved", "Account"];
 
-
-
   @override
   void initState() {
     super.initState();
-
+    _streamController = StreamController();
   }
 
   @override
@@ -75,10 +79,16 @@ class _MainScreenState extends State<MainScreen> {
           child: Column(
             children: <Widget>[
               SearchBar(
-                onClose: (isFocus) {
-                  print("TextFeild is " + isFocus.toString());
+                onClose: (isFocus, text) {
+                  print("TextFeild is " +
+                      text +
+                      " and Focus is " +
+                      isFocus.toString());
                   setState(() {
+                    print("set state called");
+                    _streamController.add(text);
                     _showSearch = isFocus;
+                    _text = text;
                   });
                 },
               ),
@@ -86,10 +96,19 @@ class _MainScreenState extends State<MainScreen> {
                 child: Stack(
                   children: <Widget>[
                     navView.elementAt(_selectedIndex),
-                    Visibility(
-                      child: SearchWidget(),
-                      visible: _showSearch,
-                    ),
+                    FutureBuilder<Movies>(
+                        future: searchMovie(_text),
+                        builder: (context, snapshot) {
+                          if (snapshot.hasData) {
+                            return SearchWidget(snapshot.data.results);
+                          } else {
+                            return Container();
+                          }
+                        }),
+//                    Visibility(
+//                      child: SearchWidget(_text),
+//                      visible: _showSearch,
+//                    ),
                   ],
                 ),
               ),
@@ -142,4 +161,8 @@ class _MainScreenState extends State<MainScreen> {
     });
   }
 
+  Future<Movies> searchMovie(String query) {
+    String urlSearch = kUrlSearchMovie.replaceAll("___query___", query);
+    return networkHelper.fetchSearchMovie(urlSearch);
+  }
 }
