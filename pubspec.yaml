@@ -27,6 +27,8 @@ dependencies:
   youtube_player_flutter: ^6.1.0+4
   video_player: ^0.10.8+1
   http: ^0.12.0+4
+  pull_to_refresh: ^1.5.7
+
 
 
 dev_dependencies:

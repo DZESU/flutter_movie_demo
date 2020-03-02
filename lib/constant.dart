@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 const TextStyle headerStyle = TextStyle(
     fontWeight: FontWeight.bold, fontSize: 18.0, color: Colors.black87);
 const TextStyle normalStyle =
-    TextStyle(fontSize: 14.0, color: Color(0xFF757575));
+    TextStyle(fontSize: 14.0, color: Color(0xFFc5c5c5));
 
 const String kProfileUrl =
     "https://i.pinimg.com/originals/72/1a/3e/721a3eb2ef1aa90467995034fe098ca9.jpg";

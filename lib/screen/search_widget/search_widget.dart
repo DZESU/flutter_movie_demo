@@ -49,14 +49,18 @@ class _SearchWidgetState extends State<SearchWidget> {
             ),
           ),
           Expanded(
-            child: ListView.separated(
-                itemBuilder: (context, index) {
-                  return SearchResult(widget.movies[index]);
-                },
-                separatorBuilder: (context, index) {
-                  return Divider();
-                },
-                itemCount: widget.movies.length),
+            child: widget.movies.isNotEmpty
+                ? ListView.separated(
+                    itemBuilder: (context, index) {
+                      return SearchResult(widget.movies[index]);
+                    },
+                    separatorBuilder: (context, index) {
+                      return Divider();
+                    },
+                    itemCount: widget.movies.length)
+                : Center(
+                    child: Text("No Result found.",style: headerStyle,),
+                  ),
           )
         ],
       ),
@@ -100,10 +104,9 @@ class SearchResult extends StatelessWidget {
                       topLeft: Radius.circular(10.0),
                       bottomLeft: Radius.circular(10.0)),
                   child: Image.network(
-                    movie.poster_path!=null?
-                        kBaseImageUrl + movie.poster_path:
-                        kBaseImageUrl
-                        ,
+                    movie.poster_path != null
+                        ? kBaseImageUrl + movie.poster_path
+                        : kBaseImageUrl,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -135,7 +138,7 @@ class SearchResult extends StatelessWidget {
                       child: StarRating(
                         rating: movie.vote_average / 2,
                         starConfig: StarConfig(
-                          size: 15,
+                          size: 13,
                           fillColor: Colors.black87,
                           strokeWidth: 0,
                         ),

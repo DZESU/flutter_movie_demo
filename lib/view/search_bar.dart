@@ -29,10 +29,6 @@ class _SearchBarState extends State<SearchBar>{
         widget.onClose(true, _controller.text);
       }
     });
-    _focusNode.addListener(() {
-      print("view focus is "+ _focusNode.hasPrimaryFocus.toString());
-//      widget.onClose(_focusNode.hasPrimaryFocus);
-    });
     super.initState();
   }
 

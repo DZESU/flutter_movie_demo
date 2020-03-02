@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:movie_demo/model/movies/Result.dart';
 import 'package:movie_demo/screen/movie_detail/movie_detail_view.dart';
@@ -6,33 +5,40 @@ import 'package:movie_demo/screen/movie_detail/movie_detail_view.dart';
 import '../../constant.dart';
 
 class PopularMovie extends StatelessWidget {
-
-
   PopularMovie({@required this.movie});
-  final Result movie;
 
+  final Result movie;
 
   @override
   Widget build(BuildContext context) {
     String genres = "";
-    for(int i = 0; i < movie.genre_ids.length; i++){
-      genres += kGenres[movie.genre_ids[i]]+ ", ";
+    for (int i = 0; i < movie.genre_ids.length; i++) {
+      genres += kGenres[movie.genre_ids[i]] + ", ";
     }
     genres = genres.substring(0, genres.length - 2);
 
     return GestureDetector(
-      onTap: (){
-        Navigator.pushNamed(context, MovieDetialRoute,arguments: movie.id);
+      onTap: () {
+        Navigator.pushNamed(context, MovieDetialRoute, arguments: movie.id);
       },
       child: ClipRRect(
         borderRadius: BorderRadius.circular(10.0),
         child: Stack(
           children: <Widget>[
             Container(
-              width: 360,
+//              width: 360,
+              width: 320,
               child: Image.network(
-                kBaseImageUrl+movie.backdrop_path,
+                kBaseImageUrl + movie.backdrop_path,
                 fit: BoxFit.cover,
+                loadingBuilder: (BuildContext context, Widget child,
+                    ImageChunkEvent loadingProgress) {
+                  if (loadingProgress == null) {
+                    return child;
+                  } else {
+                    return Center(child: CircularProgressIndicator());
+                  }
+                },
               ),
             ),
             Positioned(
@@ -81,4 +87,3 @@ class PopularMovie extends StatelessWidget {
     );
   }
 }
-

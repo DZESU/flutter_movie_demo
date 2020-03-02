@@ -80,13 +80,8 @@ class _MainScreenState extends State<MainScreen> {
             children: <Widget>[
               SearchBar(
                 onClose: (isFocus, text) {
-                  print("TextFeild is " +
-                      text +
-                      " and Focus is " +
-                      isFocus.toString());
                   setState(() {
                     print("set state called");
-                    _streamController.add(text);
                     _showSearch = isFocus;
                     _text = text;
                   });
@@ -101,7 +96,9 @@ class _MainScreenState extends State<MainScreen> {
                         builder: (context, snapshot) {
                           if (snapshot.hasData) {
                             return SearchWidget(snapshot.data.results);
-                          } else {
+                          } else if(_showSearch){
+                            return Scaffold(body: Center(child: CircularProgressIndicator(),),);
+                          }else {
                             return Container();
                           }
                         }),

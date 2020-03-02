@@ -9,7 +9,7 @@ class StarRating extends StatefulWidget {
   final double spaceBetween;
   final Function onChangeRating;
 
-  StarRating({this.starConfig = const StarConfig(), this.rating = 0.0, this.spaceBetween = 10.0, this.onChangeRating});
+  StarRating({this.starConfig = const StarConfig(), this.rating = 0.0, this.spaceBetween = 5.0, this.onChangeRating});
 
   @override
   _StarRatingState createState() => _StarRatingState();

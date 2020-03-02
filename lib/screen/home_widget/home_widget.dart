@@ -1,10 +1,9 @@
-import 'dart:convert';
 
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:movie_demo/constant.dart';
 import 'package:movie_demo/model/movies/Movies.dart';
 import 'package:movie_demo/services/network_helper.dart';
+import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'now_showing_widget.dart';
 import 'popular_movie_view.dart';
@@ -18,16 +17,28 @@ class _HomeWidgetState extends State<HomeWidget> {
   Future<Movies> popularMovies;
   Future<Movies> nowShowingMovie;
   Future<Movies> trendingMovie;
+//  RefreshController _refreshController = RefreshController(
+//      initialRefresh: false);
 
-  @override
-  void initState() {
-    super.initState();
+  void _fetchData() {
+    // monitor network fetch
     NetworkHelper networkHelper = NetworkHelper();
     popularMovies = networkHelper.fetchMovies(kUrlPopularMovie);
     nowShowingMovie = networkHelper.fetchMovies(kUrlNowPlaying);
     trendingMovie = networkHelper.fetchMovies(kUrlTrendingMovie);
+
+    // if failed,use refreshFailed()
+    _refreshController.refreshCompleted();
   }
 
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchData();
+  }
+  RefreshController _refreshController =
+  RefreshController(initialRefresh: false);
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -75,12 +86,12 @@ class _HomeWidgetState extends State<HomeWidget> {
         ),
         FutureBuilder(
           future: trendingMovie,
-          builder: (context, snapshot){
-            if(!snapshot.hasData){
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
               return Center(
                 child: CircularProgressIndicator(),
               );
-            }else{
+            } else {
               return Container();
             }
           },

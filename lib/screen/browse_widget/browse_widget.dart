@@ -77,12 +77,12 @@ class _BrowseWidgetState extends State<BrowseWidget> {
         ),
         FutureBuilder(
           future: popularMovies,
-          builder: (context, snapshot){
-            if(!snapshot.hasData){
+          builder: (context, snapshot) {
+            if (!snapshot.hasData) {
               return Center(
                 child: CircularProgressIndicator(),
               );
-            }else{
+            } else {
               return Container();
             }
           },
@@ -134,10 +134,20 @@ class ActorWidget extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 20.0),
                   child: Container(
                     width: 100,
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          kBaseImageUrl + people[index].profile_path),
-                      backgroundColor: Colors.white,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100.0),
+                      child: Image.network(
+                        kBaseImageUrl + people[index].profile_path,
+                        fit: BoxFit.cover,
+                        loadingBuilder: (BuildContext context, Widget child,
+                            ImageChunkEvent loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
+                          } else {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                        },
+                      ),
                     ),
                   ),
                 );
@@ -146,10 +156,20 @@ class ActorWidget extends StatelessWidget {
                   padding: const EdgeInsets.only(left: 20.0),
                   child: Container(
                     width: 100,
-                    child: CircleAvatar(
-                      backgroundImage: NetworkImage(
-                          kBaseImageUrl + people[index].profile_path),
-                      backgroundColor: Colors.white,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100.0),
+                      child: Image.network(
+                        kBaseImageUrl + people[index].profile_path,
+                        fit: BoxFit.cover,
+                        loadingBuilder: (BuildContext context, Widget child,
+                            ImageChunkEvent loadingProgress) {
+                          if (loadingProgress == null) {
+                            return child;
+                          } else {
+                            return Center(child: CircularProgressIndicator());
+                          }
+                        },
+                      ),
                     ),
                   ),
                 );
