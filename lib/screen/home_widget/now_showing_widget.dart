@@ -22,7 +22,7 @@ class NowShowingView extends StatelessWidget {
                 Expanded(
                   child: Text(
                     headerTitle,
-                    style: headerStyle,
+                    style: headerBlack,
                   ),
                 ),
                 Expanded(
@@ -37,7 +37,7 @@ class NowShowingView extends StatelessWidget {
           ),
           Container(
             margin: EdgeInsets.only(top: 20),
-            height: 240,
+            height: 250,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               itemCount: 10,
@@ -103,10 +103,7 @@ class NowShowingMovie extends StatelessWidget {
             child: Text(
               movie.title,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  color: Colors.black54,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 15.0),
+              style: movieTitleBlack,
             ),
           ),
           Container(
@@ -114,10 +111,7 @@ class NowShowingMovie extends StatelessWidget {
             child: Text(
               genres,
               overflow: TextOverflow.ellipsis,
-              style: TextStyle(
-                  color: Colors.black26,
-                  fontWeight: FontWeight.w400,
-                  fontSize: 10.0),
+              style: genresBlack,
             ),
           ),
         ],

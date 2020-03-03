@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:movie_demo/constant.dart';
 import 'package:movie_demo/model/movies/Movies.dart';
 import 'package:movie_demo/services/network_helper.dart';
-import 'package:pull_to_refresh/pull_to_refresh.dart';
 
 import 'now_showing_widget.dart';
 import 'popular_movie_view.dart';
@@ -20,15 +19,20 @@ class _HomeWidgetState extends State<HomeWidget> {
 //  RefreshController _refreshController = RefreshController(
 //      initialRefresh: false);
 
+  int page = 1;
   void _fetchData() {
     // monitor network fetch
     NetworkHelper networkHelper = NetworkHelper();
-    popularMovies = networkHelper.fetchMovies(kUrlPopularMovie);
+    String urlPopularMovie = kUrlPopularMovie.replaceAll("__page__", page.toString());
+    popularMovies = networkHelper.fetchMovies(urlPopularMovie);
     nowShowingMovie = networkHelper.fetchMovies(kUrlNowPlaying);
     trendingMovie = networkHelper.fetchMovies(kUrlTrendingMovie);
 
-    // if failed,use refreshFailed()
-    _refreshController.refreshCompleted();
+  }
+
+  Future<void> _reloadData(){
+    _fetchData();
+    return Future.wait([popularMovies,nowShowingMovie,trendingMovie]);
   }
 
 
@@ -37,55 +41,57 @@ class _HomeWidgetState extends State<HomeWidget> {
     super.initState();
     _fetchData();
   }
-  RefreshController _refreshController =
-  RefreshController(initialRefresh: false);
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        ListView(
-          children: <Widget>[
-            FutureBuilder<Movies>(
-              future: popularMovies,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return PopularMovieView(movies: snapshot.data.results);
-                } else {
-                  return Container();
-                }
-              },
-            ),
-            FutureBuilder<Movies>(
-              future: nowShowingMovie,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return NowShowingView(
-                      headerTitle: "Now Showing",
-                      movies: snapshot.data.results);
-                } else {
-                  return Container();
-                }
-              },
-            ),
-            FutureBuilder<Movies>(
-              future: trendingMovie,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return NowShowingView(
-                      headerTitle: "Trend of the Week",
-                      movies: snapshot.data.results);
-                } else {
-                  return Container();
-                }
-              },
-            ),
-            Container(
-              margin: EdgeInsets.only(bottom: 10),
-            )
-          ],
+        RefreshIndicator(
+          onRefresh: _reloadData,
+          child: ListView(
+            physics: const AlwaysScrollableScrollPhysics(),
+            children: <Widget>[
+              FutureBuilder<Movies>(
+                future: popularMovies,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return PopularMovieView(movies: snapshot.data.results);
+                  } else {
+                    return Container();
+                  }
+                },
+              ),
+              FutureBuilder<Movies>(
+                future: nowShowingMovie,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return NowShowingView(
+                        headerTitle: "Now Showing",
+                        movies: snapshot.data.results);
+                  } else {
+                    return Container();
+                  }
+                },
+              ),
+              FutureBuilder<Movies>(
+                future: trendingMovie,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return NowShowingView(
+                        headerTitle: "Trend of the Week",
+                        movies: snapshot.data.results);
+                  } else {
+                    return Container();
+                  }
+                },
+              ),
+              Container(
+                margin: EdgeInsets.only(bottom: 10),
+              )
+            ],
+          ),
         ),
         FutureBuilder(
-          future: trendingMovie,
+          future: Future.wait([trendingMovie,popularMovies,nowShowingMovie]),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return Center(

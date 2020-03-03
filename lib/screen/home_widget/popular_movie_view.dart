@@ -22,7 +22,7 @@ class PopularMovieView extends StatelessWidget {
                 Expanded(
                   child: Text(
                     "Popular Movie",
-                    style: headerStyle,
+                    style: headerBlack,
                   ),
                 ),
                 Expanded(
@@ -36,7 +36,8 @@ class PopularMovieView extends StatelessWidget {
             ),
           ),
           Container(
-            height: 200,
+//            height: 200,
+            height: 180,
             margin: EdgeInsets.only(top: 20.0),
             child: ListView.separated(
               scrollDirection: Axis.horizontal,

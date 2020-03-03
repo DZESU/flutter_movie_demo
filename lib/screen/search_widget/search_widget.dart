@@ -35,7 +35,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                 Expanded(
                   child: Text(
                     "Search Result",
-                    style: headerStyle,
+                    style: headerBlack,
                   ),
                 ),
                 Expanded(
@@ -59,7 +59,7 @@ class _SearchWidgetState extends State<SearchWidget> {
                     },
                     itemCount: widget.movies.length)
                 : Center(
-                    child: Text("No Result found.",style: headerStyle,),
+                    child: Text("No Result found.",style: headerBlack,),
                   ),
           )
         ],
@@ -122,7 +122,7 @@ class SearchResult extends StatelessWidget {
                       margin: EdgeInsets.only(top: 15),
                       child: Text(
                         movie.title,
-                        style: headerStyle,
+                        style: headerBlack,
                       ),
                     ),
                     Container(

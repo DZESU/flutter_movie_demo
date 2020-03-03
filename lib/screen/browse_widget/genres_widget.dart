@@ -24,7 +24,7 @@ class GenresWidget extends StatelessWidget {
                 Expanded(
                   child: Text(
                     "Top Genres",
-                    style: headerStyle,
+                    style: headerBlack,
                   ),
                 ),
                 Expanded(
@@ -102,11 +102,7 @@ class GenresMovie extends StatelessWidget {
           ),
           Text(
             kGenres[movie.genre_ids[0]],
-            style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 18.0,
-                color: Colors.white
-            ),
+            style: headerWhite,
           )
         ],
       ),

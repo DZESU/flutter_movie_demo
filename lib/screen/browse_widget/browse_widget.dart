@@ -21,59 +21,73 @@ class _BrowseWidgetState extends State<BrowseWidget> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    print("initState BrowseWidgetState");
+    _fetchData();
+  }
+
+  void _fetchData(){
     NetworkHelper networkHelper = NetworkHelper();
     popularMovies = networkHelper.fetchMovies(kUrlPopularMovie);
     topActors = networkHelper.fetchPeople(kUrlTopActor);
+  }
+
+  Future<void> _reloadData(){
+    _fetchData();
+    setState(() {});
+    return Future.wait([popularMovies, topActors]);
   }
 
   @override
   Widget build(BuildContext context) {
     return Stack(
       children: <Widget>[
-        ListView(
-          children: <Widget>[
-            FutureBuilder<Movies>(
-              future: popularMovies,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return NowShowingView(
-                    headerTitle: "Popular Movie",
-                    movies: snapshot.data.results,
-                  );
-                } else {
-                  return Center();
-                }
-              },
-            ),
-            Container(
-              margin: EdgeInsets.only(top: 20.0),
-              child: FutureBuilder<People>(
-                future: topActors,
+        RefreshIndicator(
+          onRefresh: _reloadData,
+          child: ListView(
+            children: <Widget>[
+              FutureBuilder<Movies>(
+                future: popularMovies,
                 builder: (context, snapshot) {
-                  print("snapshot data: " + snapshot.data.toString());
                   if (snapshot.hasData) {
-                    return ActorWidget(
-                      people: snapshot.data.results,
+                    return NowShowingView(
+                      headerTitle: "Popular Movie",
+                      movies: snapshot.data.results,
                     );
                   } else {
                     return Center();
                   }
                 },
               ),
-            ),
-            FutureBuilder<Movies>(
-              future: popularMovies,
-              builder: (context, snapshot) {
-                if (snapshot.hasData) {
-                  return GenresWidget(
-                    movies: snapshot.data.results,
-                  );
-                } else {
-                  return Center();
-                }
-              },
-            ),
-          ],
+              Container(
+                margin: EdgeInsets.only(top: 20.0),
+                child: FutureBuilder<People>(
+                  future: topActors,
+                  builder: (context, snapshot) {
+                    print("snapshot data: " + snapshot.data.toString());
+                    if (snapshot.hasData) {
+                      return ActorWidget(
+                        people: snapshot.data.results,
+                      );
+                    } else {
+                      return Center();
+                    }
+                  },
+                ),
+              ),
+              FutureBuilder<Movies>(
+                future: popularMovies,
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return GenresWidget(
+                      movies: snapshot.data.results,
+                    );
+                  } else {
+                    return Center();
+                  }
+                },
+              ),
+            ],
+          ),
         ),
         FutureBuilder(
           future: popularMovies,
@@ -108,7 +122,7 @@ class ActorWidget extends StatelessWidget {
               Expanded(
                 child: Text(
                   "Top Actors",
-                  style: headerStyle,
+                  style: headerBlack,
                 ),
               ),
               Expanded(

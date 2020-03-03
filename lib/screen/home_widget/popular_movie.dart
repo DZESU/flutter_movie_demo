@@ -64,19 +64,20 @@ class PopularMovie extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
-                  Text(
-                    movie.title,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 17.0),
+                  Container(
+                    child: Text(
+                      movie.title,
+                      style: movieTitleWhite,
+                    ),
+                    margin: EdgeInsets.only(bottom: 5),
                   ),
-                  Text(
-                    genres,
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 14.0),
+                  Container(
+                    margin: EdgeInsets.only(bottom: 10),
+                    child: Text(
+                      genres,
+                      overflow: TextOverflow.ellipsis,
+                      style: genresWhite,
+                    ),
                   ),
                 ],
               ),
