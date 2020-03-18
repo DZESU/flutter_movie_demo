@@ -65,8 +65,10 @@ class PopularMovie extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: <Widget>[
                   Container(
+                    width: 320,
                     child: Text(
                       movie.title,
+                      overflow: TextOverflow.ellipsis,
                       style: movieTitleWhite,
                     ),
                     margin: EdgeInsets.only(bottom: 5),

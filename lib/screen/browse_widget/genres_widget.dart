@@ -5,11 +5,20 @@ import 'package:movie_demo/model/movies/Result.dart';
 import '../../constant.dart';
 
 class GenresWidget extends StatelessWidget {
+  GenresWidget({this.movies}) {
+//    topGenres = List();
+//    movies.forEach((element) {
+//      for (int i = 0; i < movies.length; i++) {
+//        if (topGenres.isNotEmpty && kGenres[topGenres[i].genre_ids[0]] != kGenres[element.genre_ids[0]]) {
+//          topGenres.add(element);
+//        }
+//      }
+//    });
+//    print("lenght of genres is "+topGenres.length.toString());
+  }
 
-
-  GenresWidget({this.movies});
+  List<Result> topGenres;
   List<Result> movies;
-
 
   @override
   Widget build(BuildContext context) {
@@ -29,7 +38,7 @@ class GenresWidget extends StatelessWidget {
                 ),
                 Expanded(
                   child: GestureDetector(
-                    onTap: (){
+                    onTap: () {
                       print("See all");
                     },
                     child: Text(
@@ -53,11 +62,15 @@ class GenresWidget extends StatelessWidget {
                 if (index == 0) {
                   return Padding(
                       padding: const EdgeInsets.only(left: 20.0),
-                      child: GenresMovie(movie: movies[index],));
+                      child: GenresMovie(
+                        movie: movies[index],
+                      ));
                 } else {
                   return Padding(
                       padding: const EdgeInsets.only(left: 20.0),
-                      child: GenresMovie(movie: movies[index],));
+                      child: GenresMovie(
+                        movie: movies[index],
+                      ));
                 }
               },
             ),
@@ -69,11 +82,9 @@ class GenresWidget extends StatelessWidget {
 }
 
 class GenresMovie extends StatelessWidget {
-
   GenresMovie({this.movie});
 
   final Result movie;
-
 
   @override
   Widget build(BuildContext context) {
@@ -87,7 +98,7 @@ class GenresMovie extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10.0),
               child: Image.network(
-                kBaseImageUrl+movie.poster_path,
+                kBaseImageUrl + movie.poster_path,
                 fit: BoxFit.cover,
               ),
             ),

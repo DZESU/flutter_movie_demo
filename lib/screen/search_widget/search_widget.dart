@@ -129,16 +129,17 @@ class SearchResult extends StatelessWidget {
                       margin: EdgeInsets.only(top: 5),
                       child: Text(
                         genres,
-                        style: normalStyle,
+                        style: genresBlack,
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     Container(
                       margin: EdgeInsets.only(top: 8),
                       child: StarRating(
+                        spaceBetween: 3,
                         rating: movie.vote_average / 2,
                         starConfig: StarConfig(
-                          size: 13,
+                          size: 12,
                           fillColor: Colors.black87,
                           strokeWidth: 0,
                         ),
